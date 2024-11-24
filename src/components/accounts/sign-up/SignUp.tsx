@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
-import ForgotPassword from './ForgotPassword';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -25,18 +24,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    maxWidth: '450px',
-  },
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+  [theme.breakpoints.up('sm')]: {
+    width: '450px',
+  },
   ...theme.applyStyles('dark', {
     boxShadow:
       'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
   }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
   padding: theme.spacing(2),
@@ -59,36 +58,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props: { disableCustomTheme?: boolean }) {
+export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const [nameError, setNameError] = React.useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = React.useState('');
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
+    const name = document.getElementById('name') as HTMLInputElement;
 
     let isValid = true;
 
@@ -110,13 +91,36 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setPasswordErrorMessage('');
     }
 
+    if (!name.value || name.value.length < 1) {
+      setNameError(true);
+      setNameErrorMessage('Name is required.');
+      isValid = false;
+    } else {
+      setNameError(false);
+      setNameErrorMessage('');
+    }
+
     return isValid;
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (nameError || emailError || passwordError) {
+      event.preventDefault();
+      return;
+    }
+    const data = new FormData(event.currentTarget);
+    console.log({
+      name: data.get('name'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <SignInContainer direction="column" justifyContent="space-between">
+      <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
             component="h1"
@@ -128,104 +132,102 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           <Box
             component="form"
             onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              gap: 2,
-            }}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
+            <FormControl>
+              <FormLabel htmlFor="name">이름</FormLabel>
+              <TextField
+                autoComplete="name"
+                name="name"
+                required
+                fullWidth
+                id="name"
+                placeholder="이름을 입력하세요"
+                error={nameError}
+                helperText={nameErrorMessage}
+                color={nameError ? 'error' : 'primary'}
+              />
+            </FormControl>
             <FormControl>
               <FormLabel htmlFor="email">이메일</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="이메일을 입력하세요"
-                autoComplete="email"
-                autoFocus
                 required
                 fullWidth
+                id="email"
+                placeholder="이메일을 입력하세요"
+                name="email"
+                autoComplete="email"
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
+                error={emailError}
+                helperText={emailErrorMessage}
+                color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="password">비밀번호</FormLabel>
               <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="비밀번호를 입력하세요"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                autoFocus
                 required
                 fullWidth
+                name="password"
+                placeholder="••••••"
+                type="password"
+                id="password"
+                autoComplete="new-password"
                 variant="outlined"
+                error={passwordError}
+                helperText={passwordErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<Checkbox value="allowExtraEmails" color="primary" />}
+              label="I want to receive updates via email."
             />
-            <ForgotPassword open={open} handleClose={handleClose} />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={validateInputs}
+              style={{ textTransform: 'none' }}
             >
-              로그인
+              가입하기
             </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              Forgot your password?
-            </Link>
           </Box>
-          <Divider>or</Divider>
+          <Divider>
+            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+          </Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={() => alert('Sign up with Google')}
               startIcon={<GoogleIcon />}
               style={{ textTransform: 'none' }}
             >
-              Sign in with Google
+              Sign up with Google
             </Button>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
+              onClick={() => alert('Sign up with Facebook')}
               startIcon={<FacebookIcon />}
               style={{ textTransform: 'none' }}
             >
-              Sign in with Facebook
+              Sign up with Facebook
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
+              Already have an account?{' '}
               <Link
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Sign up
+                Sign in
               </Link>
             </Typography>
           </Box>
         </Card>
-      </SignInContainer>
+      </SignUpContainer>
     </AppTheme>
   );
 }
