@@ -1,4 +1,4 @@
-import React from "react";
+import { Button } from "@mui/material";
 import Feed from "./Feed";
 
 export default function Maincontent(): JSX.Element {
@@ -35,7 +35,7 @@ export default function Maincontent(): JSX.Element {
                                     aria-selected="false"
                                     href="#images"
                                 >
-                                    Images
+                                    Contents
                                 </a>
                             </li>
                         </ul>
@@ -56,7 +56,7 @@ export default function Maincontent(): JSX.Element {
                                         className="form-control"
                                         id="message"
                                         rows={3}
-                                        placeholder="What are you thinking?"
+                                        placeholder="당신의 팀로그를 남겨보세요."
                                     ></textarea>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@ export default function Maincontent(): JSX.Element {
                                             id="customFile"
                                         />
                                         <label className="custom-file-label" htmlFor="customFile">
-                                            Upload image
+                                            파일을 선택하세요.
                                         </label>
                                     </div>
                                 </div>
@@ -83,9 +83,7 @@ export default function Maincontent(): JSX.Element {
                         </div>
                         <div className="btn-toolbar justify-content-between">
                             <div className="btn-group">
-                                <button type="submit" className="btn btn-primary">
-                                    share
-                                </button>
+                                <Button variant="contained">업로드</Button>
                             </div>
                             <div className="btn-group">
                                 <button
