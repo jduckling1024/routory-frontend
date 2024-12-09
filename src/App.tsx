@@ -1,11 +1,10 @@
 // import SignIn from "components/accounts/sign-in/SignIn";
 
-// import Leftsidebar from "components/Leftsidebar";
-// import Maincontent from "components/Maincontent";
-// import Rightsidebar from "components/Rightsidebar";
+import Leftsidebar from "components/Leftsidebar";
+import Maincontent from "components/Maincontent";
+import Rightsidebar from "components/Rightsidebar";
 import Navbar from "./components/Navbar";
 import "./styles.css";
-import ProfileCard from "components/accounts/my-page/ProfileCard";
 
 export default function App() {
   return (
@@ -14,12 +13,12 @@ export default function App() {
       <div className="container-fluid gedf-wrapper">
         {/* <SignIn /> */}
         {/* <SignUp /> */}
-        {/* <div className="row">
+        <div className="row">
           <Leftsidebar />
           <Maincontent />
           <Rightsidebar />
-        </div> */}
-        <ProfileCard />
+        </div>
+        {/* <ProfileCard /> */}
       </div>
     </>
   );

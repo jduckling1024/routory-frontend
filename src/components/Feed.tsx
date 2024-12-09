@@ -1,7 +1,25 @@
+import { ChatBubbleOutline, People, Public } from '@mui/icons-material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import MenuIcon from '@mui/icons-material/Menu';
+import UpdateIcon from '@mui/icons-material/Update';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Chip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { useState } from "react";
+import AppTheme from "./accounts/shared-theme/AppTheme";
 
 export default function Feed(): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // Menu open/close handlers
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <>
+    <AppTheme>
       {/* Second Card */}
       <div className="card gedf-card">
         <div className="card-header">
@@ -12,86 +30,84 @@ export default function Feed(): JSX.Element {
                   className="rounded-circle"
                   width="45"
                   src="https://picsum.photos/50/50"
-                  alt=""
+                  alt="user"
                 />
               </div>
               <div className="ml-2">
-                <div className="h5 m-0">@LeeCross</div>
-                <div className="h7 text-muted">Miracles Lee Cross</div>
+                <div className="h5 m-0">윤진</div>
+                <div className="h7 text-muted">3시간 전</div>
               </div>
             </div>
             <div>
-              <div className="dropdown">
-                <button
-                  className="btn btn-link dropdown-toggle"
-                  type="button"
-                  id="gedf-drop1"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+              <div className="btn-group">
+                <IconButton
+                  color="primary"
+                  onClick={handleMenuOpen}
                 >
-                  <i className="fa fa-ellipsis-h"></i>
-                </button>
-                <div
-                  className="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="gedf-drop1"
+                  <MenuIcon fontSize="small" />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
                 >
-                  <div className="h6 dropdown-header">Configuration</div>
-                  <a className="dropdown-item" href="#">
-                    Save
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Hide
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Report
-                  </a>
-                </div>
+                  <MenuItem onClick={handleMenuClose}>
+                    <UpdateIcon style={{ marginRight: 8 }} fontSize="small" />
+                    수정
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                    <DeleteIcon style={{ marginRight: 8 }} fontSize="small" />
+                    삭제
+                  </MenuItem>
+                </Menu>
               </div>
             </div>
           </div>
         </div>
         <div className="card-body">
-          <div className="text-muted h7 mb-2">
-            <i className="fa fa-clock-o"></i> 10 min ago
-          </div>
-          <a className="card-link" href="#">
-            <h5 className="card-title">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-              consectetur deserunt illo esse distinctio.
-            </h5>
-          </a>
-
           <p className="card-text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
-            omnis nihil, aliquam est, voluptates officiis iure soluta alias vel
-            odit, placeat reiciendis ut libero! Quas aliquid natus cumque quae
-            repellendus. Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Ipsa, excepturi. Doloremque, reprehenderit! Quos in maiores,
-            soluta doloremque molestiae reiciendis libero expedita assumenda
-            fuga quae. Consectetur id molestias itaque facere? Hic!
+            여기에는 게시글 내용이 들어갈 예정입니다.
           </p>
           <div>
-            <span className="badge badge-primary">JavaScript</span>
-            <span className="badge badge-primary">Android</span>
-            <span className="badge badge-primary">PHP</span>
-            <span className="badge badge-primary">Node.js</span>
-            <span className="badge badge-primary">Ruby</span>
-            <span className="badge badge-primary">Paython</span>
+            <Chip label="JavaScript" color="primary" />
+            <Chip label="Android" color="primary" />
+            <Chip label="PHP" color="primary" />
+            <Chip label="Node.js" color="primary" />
+            <Chip label="Ruby" color="primary" />
+            <Chip label="Python" color="primary" />
           </div>
         </div>
-        <div className="card-footer">
-          <a href="#" className="card-link">
-            <i className="fa fa-gittip"></i> Like
-          </a>
-          <a href="#" className="card-link">
-            <i className="fa fa-comment"></i> Comment
-          </a>
-          <a href="#" className="card-link">
-            <i className="fa fa-mail-forward"></i> Share
-          </a>
+        <div className="card-footer" style={{ display: 'flex' }}>
+          <Button
+            style={{
+              textTransform: 'none',
+              flexGrow: 1,
+              justifyContent: 'center',
+            }}
+            startIcon={<FavoriteIcon color="primary" />}
+          >
+            <Typography>Like</Typography>
+          </Button>
+          <Button
+            style={{
+              textTransform: 'none',
+              flexGrow: 1,
+              justifyContent: 'center',
+            }}
+            startIcon={<ChatBubbleOutline color="primary" />}
+          >
+            <Typography>Comment</Typography>
+          </Button>
         </div>
       </div>
-    </>
+    </AppTheme>
   );
 }
