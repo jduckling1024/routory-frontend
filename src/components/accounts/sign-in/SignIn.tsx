@@ -13,6 +13,7 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
 import ForgotPassword from './ForgotPassword';
@@ -65,6 +66,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -216,9 +219,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
+                component='button'
+                variant='body2'
                 sx={{ alignSelf: 'center' }}
+                onClick={() => navigate('/sign-up')}
               >
                 Sign up
               </Link>

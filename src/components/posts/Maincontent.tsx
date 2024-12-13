@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import Feed from "./Feed";
-import AppTheme from "./accounts/shared-theme/AppTheme";
+import AppTheme from "../accounts/shared-theme/AppTheme";
 
 export default function Maincontent(): JSX.Element {
     const [tabValue, setTabValue] = useState(0);

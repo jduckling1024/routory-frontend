@@ -1,9 +1,10 @@
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
+import { Avatar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -15,7 +16,7 @@ import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import AppTheme from './accounts/shared-theme/AppTheme';
+import AppTheme from '../accounts/shared-theme/AppTheme';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -65,6 +66,9 @@ export default function PrimarySearchAppBar() {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+    const [account, setAccount] = React.useState<null | HTMLElement>(null);
+    const isLogin = Boolean(account);
+
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -99,9 +103,8 @@ export default function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem>Login</MenuItem>
+            <MenuItem onClick={handleMenuClose}>프로필 조회</MenuItem>
+            <MenuItem>로그아웃</MenuItem>
         </Menu>
     );
 
@@ -122,15 +125,15 @@ export default function PrimarySearchAppBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
+            <MenuItem style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                     <Badge badgeContent={4} color="error">
                         <MailIcon />
                     </Badge>
                 </IconButton>
-                <p>Messages</p>
+                <p style={{ margin: 0 }}>Messages</p>
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <IconButton
                     size="large"
                     aria-label="show 17 new notifications"
@@ -140,9 +143,12 @@ export default function PrimarySearchAppBar() {
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
-                <p>Notifications</p>
+                <p style={{ margin: 0 }}>Notifications</p>
             </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
+            <MenuItem
+                onClick={handleProfileMenuOpen}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
                 <IconButton
                     size="large"
                     aria-label="account of current user"
@@ -150,9 +156,9 @@ export default function PrimarySearchAppBar() {
                     aria-haspopup="true"
                     color="inherit"
                 >
-                    <AccountCircle />
+                    <Avatar sx={{ width: '1.25em', height: '1.25em' }} />
                 </IconButton>
-                <p>Profile</p>
+                <p style={{ margin: 0 }}>Profile</p>
             </MenuItem>
         </Menu>
     );
@@ -204,17 +210,22 @@ export default function PrimarySearchAppBar() {
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>
-                            <IconButton
-                                size="large"
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
+                            {
+                                isLogin ? (<IconButton
+                                    size="large"
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls={menuId}
+                                    aria-haspopup="true"
+                                    onClick={handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <Avatar sx={{ width: '1.25em', height: '1.25em' }} />
+                                </IconButton>) :
+                                    (<IconButton size="large" edge="end" color="inherit">
+                                        <LoginIcon />
+                                    </IconButton>)
+                            }
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton

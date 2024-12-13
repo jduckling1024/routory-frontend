@@ -13,6 +13,7 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
 
@@ -65,6 +66,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
+
+  const navigate = useNavigate();
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -218,9 +221,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                component='button'
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
+                onClick={() => navigate('/sign-in')}
               >
                 Sign in
               </Link>
