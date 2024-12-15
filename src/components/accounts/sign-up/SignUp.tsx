@@ -16,6 +16,8 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
+import signUp from 'services/accounts/AccountService';
+import SignupRequest from 'services/accounts/SignUpRequest';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -78,16 +80,16 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('유효하지 않은 이메일 형식입니다.');
       isValid = false;
     } else {
       setEmailError(false);
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 4) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('비밀번호는 4글자 이상이어야 합니다.');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -96,7 +98,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('이름은 필수입니다.');
       isValid = false;
     } else {
       setNameError(false);
@@ -107,17 +109,24 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const request = {
+      name: data.get('name') as string,
+      identification: data.get('email') as string,
+      password: data.get('password') as string,
+    };
+
+    signUp(request);
+
+    alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
+    navigate('/sign-in');
   };
 
   return (
@@ -148,7 +157,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 placeholder="이름을 입력하세요"
                 error={nameError}
                 helperText={nameErrorMessage}
-                color={nameError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControl>
@@ -163,7 +177,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 variant="outlined"
                 error={emailError}
                 helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControl>
@@ -179,7 +198,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 variant="outlined"
                 error={passwordError}
                 helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControlLabel
@@ -221,7 +245,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                component='button'
+                component="button"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
                 onClick={() => navigate('/sign-in')}
