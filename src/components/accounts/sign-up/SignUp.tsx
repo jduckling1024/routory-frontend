@@ -14,10 +14,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import signUp from 'services/accounts/AccountService';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
-import signUp from 'services/accounts/AccountService';
-import SignupRequest from 'services/accounts/SignUpRequest';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -108,7 +107,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (nameError || emailError || passwordError) {
@@ -123,10 +122,16 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       password: data.get('password') as string,
     };
 
-    signUp(request);
+    try {
+      const result = await signUp(request);
+      console.log(result);
 
-    alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
-    navigate('/sign-in');
+      alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
+      navigate('/sign-in');
+    } catch (e) {
+      alert('가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
   };
 
   return (
