@@ -123,13 +123,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     try {
-      const result = await signUp(request);
-      console.log(result);
+      await signUp(request);
 
       alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
       navigate('/sign-in');
     } catch (e) {
-      alert('가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      alert('가입에 실패했습니다.');
       return;
     }
   };
