@@ -183,7 +183,7 @@ export default function PrimarySearchAppBar() {
                             component="div"
                             sx={{ display: { xs: 'none', sm: 'block' } }}
                         >
-                            TeamLog
+                            Routory
                         </Typography>
                         <Search>
                             <SearchIconWrapper>

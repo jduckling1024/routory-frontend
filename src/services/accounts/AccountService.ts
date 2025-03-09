@@ -1,10 +1,18 @@
 import instance from '../../utils/interceptor';
+import SignInRequest from './SignInRequest';
 import SignupRequest from "./SignUpRequest";
 
 const signUp = async (body: SignupRequest) => {
-    const response = await instance.post('/api/accounts/sign-up', body);
-
-    return response.data;
+    return await instance.post('/api/accounts/sign-up', body);
 }
 
-export default signUp;
+const signIn = async (body: SignInRequest) => {
+    return await instance.post('/api/accounts/sign-in', body);
+}
+
+const api = {
+    signUp,
+    signIn
+}
+
+export default api;

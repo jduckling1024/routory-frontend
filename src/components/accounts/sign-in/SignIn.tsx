@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../../services/accounts/AccountService';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
 import ForgotPassword from './ForgotPassword';
@@ -77,16 +78,29 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const request = {
+      identification: data.get('email') as string,
+      password: data.get('password') as string,
+    };
+
+    try {
+      const response = await api.signIn(request);
+      // accessToken 설정
+
+      navigate('/main');
+    } catch (e) {
+      console.error(e);
+      alert('로그인에 실패했습니다.')
+    }
   };
 
   const validateInputs = () => {
@@ -94,6 +108,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const password = document.getElementById('password') as HTMLInputElement;
 
     let isValid = true;
+    const min_passord_length = 4;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
@@ -104,9 +119,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < min_passord_length) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage(`Password must be at least ${min_passord_length} characters.`);
       isValid = false;
     } else {
       setPasswordError(false);
@@ -126,7 +141,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            TeamLog
+            Routory
           </Typography>
           <Box
             component="form"
@@ -154,6 +169,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={emailError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControl>

@@ -1,11 +1,9 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -14,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import signUp from 'services/accounts/AccountService';
+import api from '../../../services/accounts/AccountService';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
 
@@ -76,6 +74,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const name = document.getElementById('name') as HTMLInputElement;
 
     let isValid = true;
+    const min_passord_length = 4;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
@@ -86,9 +85,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 4) {
+    if (!password.value || password.value.length < min_passord_length) {
       setPasswordError(true);
-      setPasswordErrorMessage('비밀번호는 4글자 이상이어야 합니다.');
+      setPasswordErrorMessage(`비밀번호는 ${min_passord_length}자 이상이어야 합니다.`);
       isValid = false;
     } else {
       setPasswordError(false);
@@ -123,7 +122,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     try {
-      await signUp(request);
+      await api.signUp(request);
 
       alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
       navigate('/sign-in');
@@ -143,7 +142,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            TeamLog
+            Routory
           </Typography>
           <Box
             component="form"
@@ -195,7 +194,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••"
+                placeholder="비밀번호를 입력하세요"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -210,10 +209,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 }}
               />
             </FormControl>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="allowExtraEmails" color="primary" />}
               label="I want to receive updates via email."
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth

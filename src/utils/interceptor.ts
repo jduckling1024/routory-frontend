@@ -7,10 +7,10 @@ const instance = axios.create({
 // response interceptor
 instance.interceptors.response.use(
     (res) => {
-        return res;
+        return res.data;
     },
-    (err) => {
-        return Promise.reject(err);
+    (e) => {
+        throw e;
     }
 );
 
