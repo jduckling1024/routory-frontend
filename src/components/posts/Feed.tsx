@@ -69,18 +69,10 @@ export default function Feed(): JSX.Element {
         </div>
         <div className="card-body">
           <p className="card-text">
-            여기에는 게시글 내용이 들어갈 예정입니다.
+            오늘의 이야기
           </p>
-          <div>
-            <Chip label="JavaScript" color="primary" />
-            <Chip label="Android" color="primary" />
-            <Chip label="PHP" color="primary" />
-            <Chip label="Node.js" color="primary" />
-            <Chip label="Ruby" color="primary" />
-            <Chip label="Python" color="primary" />
-          </div>
         </div>
-        <div className="card-footer" style={{ display: 'flex' }}>
+        {/* <div className="card-footer" style={{ display: 'flex' }}>
           <Button
             style={{
               textTransform: 'none',
@@ -101,7 +93,7 @@ export default function Feed(): JSX.Element {
           >
             <Typography>Comment</Typography>
           </Button>
-        </div>
+        </div> */}
       </div>
     </AppTheme>
   );

@@ -70,7 +70,7 @@ export default function Maincontent(): JSX.Element {
                                     id="message"
                                     multiline
                                     rows={3}
-                                    placeholder="당신의 팀로그를 남겨보세요."
+                                    placeholder="당신의 이야기를 남겨보세요."
                                     variant="outlined"
                                 />
                             </Box>
@@ -127,16 +127,12 @@ export default function Maincontent(): JSX.Element {
                                     }}
                                 >
                                     <MenuItem onClick={handleMenuClose}>
-                                        <Public style={{ marginRight: 8 }} fontSize="small" />
-                                        Public
-                                    </MenuItem>
-                                    <MenuItem onClick={handleMenuClose}>
                                         <People style={{ marginRight: 8 }} fontSize="small" />
-                                        Friends
+                                        전체 공개
                                     </MenuItem>
                                     <MenuItem onClick={handleMenuClose}>
                                         <Person style={{ marginRight: 8 }} fontSize="small" />
-                                        Just me
+                                        나만 보기
                                     </MenuItem>
                                 </Menu>
                             </div>

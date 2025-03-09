@@ -6,20 +6,20 @@ export default function Rightsidebar(): JSX.Element {
       <div className="col-md-3">
         <Paper elevation={0}>
           <div className="card-body">
-            <div className="h5">My Name</div>
-            <div className="h7 text-muted">identification</div>
+            <div className="h5">우측 패널</div>
+            <div className="h7 text-muted">여기도</div>
             <div className="h7">
-              자기소개
+              뭔가가 들어갈 예정
             </div>
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
-              <div className="h6 text-muted">팔로워</div>
-              <div className="h5">99</div>
+              <div className="h6 text-muted">key 1</div>
+              <div className="h5">value 1</div>
             </li>
             <li className="list-group-item">
-              <div className="h6 text-muted">팔로잉</div>
-              <div className="h5">1024</div>
+              <div className="h6 text-muted">key 2</div>
+              <div className="h5">value 2</div>
             </li>
           </ul>
         </Paper>
