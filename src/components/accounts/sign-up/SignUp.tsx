@@ -117,7 +117,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     const request = {
       name: data.get('name') as string,
-      identification: data.get('email') as string,
+      email: data.get('email') as string,
       password: data.get('password') as string,
     };
 

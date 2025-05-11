@@ -88,7 +88,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const data = new FormData(event.currentTarget);
 
     const request = {
-      identification: data.get('email') as string,
+      email: data.get('email') as string,
       password: data.get('password') as string,
     };
 
