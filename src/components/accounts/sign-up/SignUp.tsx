@@ -1,11 +1,9 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -13,6 +11,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../../services/accounts/AccountService';
 import AppTheme from '../shared-theme/AppTheme';
 import { FacebookIcon, GoogleIcon } from './CustomIcons';
 
@@ -66,25 +66,28 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
 
+  const navigate = useNavigate();
+
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const name = document.getElementById('name') as HTMLInputElement;
 
     let isValid = true;
+    const min_passord_length = 4;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('유효하지 않은 이메일 형식입니다.');
       isValid = false;
     } else {
       setEmailError(false);
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < min_passord_length) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage(`비밀번호는 ${min_passord_length}자 이상이어야 합니다.`);
       isValid = false;
     } else {
       setPasswordError(false);
@@ -93,7 +96,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('이름은 필수입니다.');
       isValid = false;
     } else {
       setNameError(false);
@@ -103,18 +106,30 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const request = {
+      name: data.get('name') as string,
+      identification: data.get('email') as string,
+      password: data.get('password') as string,
+    };
+
+    try {
+      await api.signUp(request);
+
+      alert('가입이 완료되었습니다. 로그인 후 이용 부탁드립니다.');
+      navigate('/sign-in');
+    } catch (e) {
+      alert('가입에 실패했습니다.');
+      return;
+    }
   };
 
   return (
@@ -127,7 +142,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            TeamLog
+            Routory
           </Typography>
           <Box
             component="form"
@@ -145,7 +160,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 placeholder="이름을 입력하세요"
                 error={nameError}
                 helperText={nameErrorMessage}
-                color={nameError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControl>
@@ -160,7 +180,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 variant="outlined"
                 error={emailError}
                 helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
             <FormControl>
@@ -169,20 +194,25 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••"
+                placeholder="비밀번호를 입력하세요"
                 type="password"
                 id="password"
                 autoComplete="new-password"
                 variant="outlined"
                 error={passwordError}
                 helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                sx={{
+                  '& input:-webkit-autofill': {
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: 'inherit',
+                  },
+                }}
               />
             </FormControl>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="allowExtraEmails" color="primary" />}
               label="I want to receive updates via email."
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -218,9 +248,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                component="button"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
+                onClick={() => navigate('/sign-in')}
               >
                 Sign in
               </Link>

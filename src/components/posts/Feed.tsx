@@ -1,11 +1,11 @@
-import { ChatBubbleOutline, People, Public } from '@mui/icons-material';
+import { ChatBubbleOutline } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuIcon from '@mui/icons-material/Menu';
 import UpdateIcon from '@mui/icons-material/Update';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Chip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, Button, Chip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
-import AppTheme from "./accounts/shared-theme/AppTheme";
+import AppTheme from "../accounts/shared-theme/AppTheme";
 
 export default function Feed(): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -26,12 +26,7 @@ export default function Feed(): JSX.Element {
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex justify-content-between align-items-center">
               <div className="mr-2">
-                <img
-                  className="rounded-circle"
-                  width="45"
-                  src="https://picsum.photos/50/50"
-                  alt="user"
-                />
+                <Avatar />
               </div>
               <div className="ml-2">
                 <div className="h5 m-0">윤진</div>
@@ -74,18 +69,10 @@ export default function Feed(): JSX.Element {
         </div>
         <div className="card-body">
           <p className="card-text">
-            여기에는 게시글 내용이 들어갈 예정입니다.
+            오늘의 이야기
           </p>
-          <div>
-            <Chip label="JavaScript" color="primary" />
-            <Chip label="Android" color="primary" />
-            <Chip label="PHP" color="primary" />
-            <Chip label="Node.js" color="primary" />
-            <Chip label="Ruby" color="primary" />
-            <Chip label="Python" color="primary" />
-          </div>
         </div>
-        <div className="card-footer" style={{ display: 'flex' }}>
+        {/* <div className="card-footer" style={{ display: 'flex' }}>
           <Button
             style={{
               textTransform: 'none',
@@ -106,7 +93,7 @@ export default function Feed(): JSX.Element {
           >
             <Typography>Comment</Typography>
           </Button>
-        </div>
+        </div> */}
       </div>
     </AppTheme>
   );

@@ -11,11 +11,8 @@ const Leftsidebar: React.FC = () => {
             <div className="col-md-3">
                 <div className="card">
                     <Paper sx={{ maxWidth: '100%' }} className="card-body" elevation={0}>
-                        <h5 className="card-title">Project Name</h5>
-                        {/* <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6> */}
-                        <p className="card-text">
-                            프로젝트에 대해 소개하는 글을 적어주세요.
-                        </p>
+                        <h5 className="card-title">좌측 패널</h5>
+                        <h6 className="card-subtitle mb-2 text-muted">뭔가가 들어갈 예정</h6>
                     </Paper>
 
                     <Paper sx={{ maxWidth: '100%' }} elevation={0}>
@@ -24,25 +21,13 @@ const Leftsidebar: React.FC = () => {
                                 <ListItemIcon>
                                     <HomeIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText>홈</ListItemText>
-                            </MenuItem>
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <TaskIcon fontSize="small" />
-                                </ListItemIcon>
-                                <ListItemText>태스크</ListItemText>
+                                <ListItemText>목록 1</ListItemText>
                             </MenuItem>
                             <MenuItem>
                                 <ListItemIcon>
                                     <PeopleIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText>멤버</ListItemText>
-                            </MenuItem>
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <WavingHandIcon fontSize="small" />
-                                </ListItemIcon>
-                                <ListItemText>팔로워</ListItemText>
+                                <ListItemText>목록 2</ListItemText>
                             </MenuItem>
                         </MenuList>
                     </Paper>

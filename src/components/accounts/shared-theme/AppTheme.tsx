@@ -26,9 +26,9 @@ export default function AppTheme({
     return createTheme({
       palette: {
         primary: {
-          main: '#F4978E',
-          light: '#F8AD9D',
-          dark: '#F08080',
+          main: '#93786C',
+          light: '#B39283',
+          dark: '#745F56',
           contrastText: '#FFFFFF',
         }
       },
