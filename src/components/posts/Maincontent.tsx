@@ -2,24 +2,35 @@ import { People, Person, Public } from "@mui/icons-material";
 import {
     Box,
     Button,
+    FormControl,
     IconButton,
+    InputLabel,
     List,
     ListItem,
     ListItemText,
     Menu,
     MenuItem,
+    Select,
+    SelectChangeEvent,
     Tab,
     Tabs,
     TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import Feed from "./Feed";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import api from '../../services/diary/DiaryService';
 import AppTheme from "../accounts/shared-theme/AppTheme";
+import Feed from "./Feed";
 
 export default function Maincontent(): JSX.Element {
     const [tabValue, setTabValue] = useState(0);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [data, setData] = useState({
+        content: "",
+        emotion: "UNDEFINED",
+    });
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -39,6 +50,26 @@ export default function Maincontent(): JSX.Element {
         }
     };
 
+    const handleEmotionChange = (event: SelectChangeEvent) => {
+        setData({
+            ...data,
+            emotion: event.target.value as string,
+        });
+    }
+
+    const handleContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setData({
+            ...data,
+            content: event.target.value,
+        });
+    };
+
+    const handleSubmit = async () => {
+        await api.save(data);
+
+        alert("기록을 완료했습니다.");
+    }
+
     return (
         <AppTheme>
             <div className="col-md-6 gedf-main">
@@ -50,8 +81,8 @@ export default function Maincontent(): JSX.Element {
                             indicatorColor="primary"
                             textColor="primary"
                         >
-                            <Tab label="Make a publication" />
-                            <Tab label="Contents" />
+                            <Tab icon = {<EditNoteIcon />} />
+                            <Tab icon = {<AttachFileIcon />} />
                         </Tabs>
                     </div>
                     <div
@@ -64,14 +95,33 @@ export default function Maincontent(): JSX.Element {
                         }}
                     >
                         {tabValue === 0 && (
-                            <Box>
+                            <Box component="form" id="post-form">
+                                <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                                    <InputLabel id="emotion-label">오늘 기분은 어떠신가요?</InputLabel>
+                                    <Select
+                                        value={data.emotion === "UNDEFINED" ? "" : data.emotion}
+                                        labelId="emotion-label"
+                                        id="emotion"
+                                        name="emotion"
+                                        onChange={handleEmotionChange}
+                                    >
+                                        <MenuItem value="HAPPY">😊 행복</MenuItem>
+                                        <MenuItem value="SAD">😢 슬픔</MenuItem>
+                                        <MenuItem value="ANGRY">😠 분노</MenuItem>
+                                        <MenuItem value="CALM">😌 평온</MenuItem>
+                                        <MenuItem value="TIRED">😩 피곤</MenuItem>
+                                    </Select>
+                                </FormControl>
+
                                 <TextField
                                     fullWidth
                                     id="message"
+                                    name="message"
                                     multiline
                                     rows={3}
                                     placeholder="당신의 이야기를 남겨보세요."
                                     variant="outlined"
+                                    onChange={handleContentChange}
                                 />
                             </Box>
                         )}
@@ -102,7 +152,7 @@ export default function Maincontent(): JSX.Element {
                         )}
                         <div className="btn-toolbar justify-content-between" style={{ marginTop: "1rem" }}>
                             <div className="btn-group">
-                                <Button variant="contained" color="primary">
+                                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
                                     업로드
                                 </Button>
                             </div>

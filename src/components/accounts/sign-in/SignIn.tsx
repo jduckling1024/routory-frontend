@@ -94,8 +94,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     try {
       const response = await api.signIn(request);
-      // accessToken 설정
-
+      localStorage.setItem('accessToken', response.token);
+      
       navigate('/main');
     } catch (e) {
       console.error(e);

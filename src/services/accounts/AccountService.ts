@@ -1,5 +1,6 @@
 import instance from '../../utils/interceptor';
 import SignInRequest from './SignInRequest';
+import SignInResponse from './SignInResponse';
 import SignupRequest from "./SignUpRequest";
 
 const signUp = async (body: SignupRequest) => {
@@ -7,7 +8,7 @@ const signUp = async (body: SignupRequest) => {
 }
 
 const signIn = async (body: SignInRequest) => {
-    return await instance.post('/api/accounts/sign-in', body);
+    return await instance.post<SignInRequest, SignInResponse>('/api/accounts/sign-in', body);
 }
 
 const api = {
